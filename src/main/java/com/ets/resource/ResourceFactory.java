@@ -1,16 +1,23 @@
 package com.ets.resource;
 
+import com.ets.domain.Encounter;
+import com.ets.domain.Patient;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Encounter;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Condition;
+//import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Encounter.DiagnosisComponent;
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Patient;
+
 import org.hl7.fhir.r4.model.Period;
+import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.Type;
 
 /**
  *
@@ -30,40 +37,49 @@ public class ResourceFactory {
             if (r != null) {
                 switch (r.getResourceType()) {
                     case Patient:
-                        this.patient = (Patient) r;
-                        this.patient.getBirthDate();
-                        System.out.println("Patient name: " + this.patient.getName());
+                        org.hl7.fhir.r4.model.Patient hapiPatient = (org.hl7.fhir.r4.model.Patient) r;
+                        
+                        patient = ResourceMapper.convertHAPIPatient(hapiPatient);
+                        
+//                        System.out.println("Patient name: " + this.patient.getFamilyName() + " -:" + this.patient.getGivenName());
+//                        System.out.println("Patient UUID: " + this.patient.getId());
+//                        System.out.println("DOB: " + this.patient.getDateOfBirth());
+
                         break;
                     case Encounter:
-                        Encounter encounter = (Encounter) r;
+                        org.hl7.fhir.r4.model.Encounter hapiEncounter = (org.hl7.fhir.r4.model.Encounter) r;                        
+                        
+                        Encounter encounter = ResourceMapper.convertHAPIEncounter(hapiEncounter);
                         this.encounters.add(encounter);
-                        //List<CodeableConcept> reasonCode = encounter.getReasonCode();
-                        
-                        String reasonCodeString = encounter.getReasonCodeFirstRep().getCodingFirstRep().getDisplay();
-                        
-                        String _patientUUID= encounter.getSubject().getReference();
-                        int index = _patientUUID.lastIndexOf(':');
-                        String patientUUID = _patientUUID.substring(index+1);
-                        
-                        Period period = encounter.getPeriod();
-                        Date dateStart = period.getStart();
-                        Date end = period.getEnd();
-
-                        List<DiagnosisComponent> diagnosis = encounter.getDiagnosis();
-
-                        System.out.println("Encoutner: " + encounter.getId());
-                        
-                        //List<CodeableConcept> type = encounter.getType();
-                        //type.forEach(c -> System.out.println("  "+c.getText()));
-                        String encounterType = encounter.getTypeFirstRep().getText();
-                        System.out.println("  Type: "+encounterType+" Reason:"+reasonCodeString+" Patient:"+patientUUID);
                         
                         break;
                     case Observation:
                         Observation observation = (Observation) r;
 
-                        //System.out.println("Observations: " + observation.getId() + " Encounter: " + observation.getEncounter().getReference());
                         this.observations.add(observation);
+                        String concept = observation.getCode().getCodingFirstRep().getDisplay();
+                        
+                        String catagory = observation.getCategoryFirstRep().getCodingFirstRep().getDisplay();
+                        
+                        
+                        //Type type = observation.getValue();
+                        String unit = observation.getValueQuantity().getUnit();
+                        String vale = observation.getValueQuantity().getValue().toString();
+                        //String value = observation.getValueCodeableConcept().getCodingFirstRep().getDisplay();
+                        
+                        //List<Coding> list = observation.getc.getCode().getCoding();
+                        
+                        String _encounterReference = observation.getEncounter().getReference();
+
+                        int index1 = _encounterReference.lastIndexOf(':');
+                        String encunterUUID = _encounterReference.substring(index1 + 1);
+                        System.out.println("Observation Encounter Ref:" + encunterUUID+" obs:"+concept);
+                        break;
+
+                    case Condition:
+
+                        Condition condition = (Condition) r;
+                        //System.out.println("Condition: " + condition.getCode().getCodingFirstRep().getDisplay());
                         break;
                 }
             }

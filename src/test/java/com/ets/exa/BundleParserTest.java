@@ -5,11 +5,11 @@
 package com.ets.exa;
 
 import ca.uhn.fhir.context.FhirContext;
+import com.ets.domain.Patient;
 import com.ets.resource.ExternalResourceBundleBuilder;
 import com.ets.resource.ResourceFactory;
 import java.io.InputStream;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 

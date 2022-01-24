@@ -5,21 +5,12 @@ import java.util.Date;
 
 public class Patient extends Resource implements Serializable {
 
-    private Long id;
     private String familyName;
     private String givenName;
     private Date dateOfBirth;
 
     public Patient(){
     
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFamilyName() {

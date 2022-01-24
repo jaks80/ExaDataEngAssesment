@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 public class Resource implements Serializable {
 
+    private Long id;
     protected String uuid;
-    private String resourceType;
+    protected String resourceType;
     protected String display;
 
     public Resource() {
@@ -38,5 +39,13 @@ public class Resource implements Serializable {
 
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

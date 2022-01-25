@@ -1,9 +1,18 @@
 package com.ets.domain;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public class Resource implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     protected String uuid;
     protected String resourceType;
@@ -41,6 +50,7 @@ public class Resource implements Serializable {
         this.resourceType = resourceType;
     }
 
+    
     public Long getId() {
         return id;
     }

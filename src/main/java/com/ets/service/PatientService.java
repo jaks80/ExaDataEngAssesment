@@ -1,25 +1,28 @@
 package com.ets.service;
 
-import com.ets.dao.PatientDAO;
+import com.ets.dao.PatientRepository;
 import com.ets.domain.Patient;
-import com.ets.resource.ResourceMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author yusufakhond
  */
+@Service("patientService")
 public class PatientService {
 
-    private PatientDAO dao;
+    @Autowired
+    private PatientRepository patientRepository;
 
     public PatientService() {
-        dao = new PatientDAO();
+        
     }
 
-    public int savePatient(org.hl7.fhir.r4.model.Patient hapiPatient) {
-        Patient patient = ResourceMapper.convertHAPIPatient(hapiPatient);
-        dao.save(patient);
-        return 1;
+    public Patient savePatient(Patient patient) {
+       
+        patient = patientRepository.saveAndFlush(patient);
+        return patient;
     }
 
 }

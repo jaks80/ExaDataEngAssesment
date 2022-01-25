@@ -1,0 +1,4 @@
+http://localhost:8081/h2-console
+jdbc:h2:mem:exadb
+User Name: sa
+Password: password

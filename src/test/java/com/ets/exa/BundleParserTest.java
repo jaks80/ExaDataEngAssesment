@@ -5,8 +5,6 @@ import com.ets.resource.ExternalResourceBundleBuilder;
 import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  *

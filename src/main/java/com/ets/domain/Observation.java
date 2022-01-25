@@ -6,6 +6,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 
 /**
  *
@@ -13,6 +15,12 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NamedEntityGraph(
+    name = "parent.withChildren",
+    attributeNodes = {
+            @NamedAttributeNode("encounter")
+    }
+)
 public class Observation extends Resource{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_fk")

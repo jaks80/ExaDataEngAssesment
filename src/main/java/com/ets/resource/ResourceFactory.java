@@ -3,9 +3,10 @@ package com.ets.resource;
 import com.ets.domain.Encounter;
 import com.ets.domain.Observation;
 import com.ets.domain.Patient;
-import com.ets.service.PatientService;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Resource;
@@ -13,43 +14,55 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author yusufakhond
+ * @author yusufakhond Resource factory is a Factory class that take foreign
+ * bundle as input and produce local object.
  */
 @Service
 public class ResourceFactory {
-    
+
     private Bundle bundle;
     private Patient patient;
-    private Set<Encounter> encounters = new LinkedHashSet<>();
-    private Set<Observation> observations = new LinkedHashSet<>();
+    //private List<Encounter> encounters = new ArrayList<>();
+    private Map<String,Encounter> encounterMap = new LinkedHashMap<>();
+    private List<Observation> observations = new ArrayList<>();
 
-    public ResourceFactory(){
-    
+    public ResourceFactory() {
+
     }
-    
+
     public void setBundle(Bundle bundle) {
         this.bundle = bundle;
         for (Bundle.BundleEntryComponent be : bundle.getEntry()) {
             Resource r = be.getResource();
-           
+
             if (r != null) {
                 switch (r.getResourceType()) {
                     case Patient:
                         org.hl7.fhir.r4.model.Patient hapiPatient = (org.hl7.fhir.r4.model.Patient) r;
 
-                        patient = ResourceMapper.convertHAPIPatient(hapiPatient);                        
+                        patient = ResourceMapper.convertHAPIPatient(hapiPatient);
                         break;
                     case Encounter:
                         org.hl7.fhir.r4.model.Encounter hapiEncounter = (org.hl7.fhir.r4.model.Encounter) r;
 
-                        this.encounters.add(ResourceMapper.convertHAPIEncounter(hapiEncounter));
+                        Encounter encounter = ResourceMapper.convertHAPIEncounter(hapiEncounter);
+                        encounterMap.put(encounter.getUuid(), encounter);
+                        //this.encounters.add(encounter);
 
                         break;
                     case Observation:
-                        org.hl7.fhir.r4.model.Observation observation = (org.hl7.fhir.r4.model.Observation) r;
+                        org.hl7.fhir.r4.model.Observation hapiObservation = (org.hl7.fhir.r4.model.Observation) r;
 
-                        this.observations.add(ResourceMapper.convertHAPIObservation(observation));
+                        Observation observation = ResourceMapper.convertHAPIObservation(hapiObservation);
                         
+                        //Assigning Observation to Encounter (OneToMany)
+                        String _encounterReference = hapiObservation.getEncounter().getReference();
+                        int index1 = _encounterReference.lastIndexOf(':');
+                        String encunterUUID = _encounterReference.substring(index1 + 1);
+                        observation.setEncounter(encounterMap.get(encunterUUID));
+                        
+                        this.getObservations().add(observation);                        
+
                         break;
 
                     case Condition:
@@ -66,8 +79,16 @@ public class ResourceFactory {
         return this.patient;
     }
 
-    public Set<Encounter> getEncounters() {
-        return encounters;
+    public List<Encounter> getEncounters() {
+        return new ArrayList<>(encounterMap.values());
+    }
+
+    public List<Observation> getObservations() {
+        return observations;
+    }
+
+    public void setObservations(List<Observation> observations) {
+        this.observations = observations;
     }
 
 }

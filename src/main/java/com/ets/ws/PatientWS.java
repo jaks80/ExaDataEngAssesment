@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yusufakhond
  */
 @RestController
-@RequestMapping//("/movies")
+@RequestMapping("/patient")
 public class PatientWS {
     
     @Autowired

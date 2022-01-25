@@ -1,11 +1,8 @@
 package com.ets;
 
 import ca.uhn.fhir.context.FhirContext;
-import com.ets.domain.Patient;
-import com.ets.resource.ExternalResourceBundleBuilder;
 import com.ets.resource.ResourceFactory;
 import com.ets.service.PatientService;
-import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

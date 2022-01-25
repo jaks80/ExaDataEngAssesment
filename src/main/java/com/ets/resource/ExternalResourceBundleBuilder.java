@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  *
  * @author yusufakhond
+ * Resource builder is a class that unmarshal json file and build object
  */
 @Service
 public class ExternalResourceBundleBuilder implements ExternerResourceBuilder {

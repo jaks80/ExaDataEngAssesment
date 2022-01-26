@@ -1,4 +1,11 @@
+Lgoin to H2 database Cosole:
+---------------------------------------
 http://localhost:8081/h2-console
 jdbc:h2:mem:exadb
 User Name: sa
 Password: password
+---------------------------------------
+
+Start parsing json:
+Call an API to start parsing json: http://localhost:8081
+Get All Observations: http://localhost:8081/obs/getall

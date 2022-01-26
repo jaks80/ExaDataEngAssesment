@@ -22,6 +22,9 @@ public class ObservationWS {
     @Autowired
     private ObservationService observationService;
     
+    /*
+     Just a sample report to see all observations
+    */
     @RequestMapping("/getall")
     public List<String> get() {
         System.out.println("Observation.....");

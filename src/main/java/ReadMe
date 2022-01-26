@@ -1,3 +1,10 @@
+1. ExaDataEngAssesment is a maven application compiled with jdk 1.8
+2. Import porject in IDE and run it/ Click on ExaDataEngAssesment.jar to run it
+3. Calling http://localhost:8081 api will start parsing files in resource folder and save data in database(This can be external web service too)
+4. Call http://localhost:8081/obs/getall to see saved data in database. Alternatively login to database console to see tables
+5. Only 3 FHIR entities are parsed for sample, obviously more entities can be parsed 
+
+
 Lgoin to H2 database Cosole:
 ---------------------------------------
 http://localhost:8081/h2-console
